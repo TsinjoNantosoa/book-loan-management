@@ -2,6 +2,7 @@ package com.tsinjo.book_borrow.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true)
 public class ConfigSecurity {
+    private JwtFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
+
+    public ConfigSecurity(AuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
+    }
 
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
@@ -39,7 +46,7 @@ public class ConfigSecurity {
 
 
                         ).permitAll()
-                                .requestMatchers()
+                                .anyRequest()
                                 .authenticated()
                 ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
