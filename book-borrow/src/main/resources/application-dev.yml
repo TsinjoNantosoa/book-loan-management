@@ -34,3 +34,9 @@ spring:
     test-connection: false  # Pas de test de connexion au démarrage
     # Configuration pour envoyer les mails en développement avec MailDev (port 1025 SMTP, interface Web sur http://localhost:1080)
 
+    application:
+      security:
+        jwt:
+          secret-key: 3I9c-Un"#HIi+mL
+          expiration: 8640000
+
