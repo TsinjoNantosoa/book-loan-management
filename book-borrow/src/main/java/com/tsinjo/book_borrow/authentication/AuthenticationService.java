@@ -1,14 +1,18 @@
 package com.tsinjo.book_borrow.authentication;
 
 import com.tsinjo.book_borrow.role.RoleRepository;
+import com.tsinjo.book_borrow.user.Token;
+import com.tsinjo.book_borrow.user.TokenRepository;
 import com.tsinjo.book_borrow.user.User;
 import com.tsinjo.book_borrow.user.UserRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.cfg.defs.EmailDef;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,6 +21,8 @@ import java.util.List;
 public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
+
 
     private RoleRepository roleRepository;
     public void register(RegistrationRequest request) {
@@ -45,7 +51,14 @@ public class AuthenticationService {
     private String generateAndSaveActivationToken(User user) {
         //generate the token
         String generateToken = generateAndSaveActivationCode(6);
-        return null;
+        var token = Token.builder()
+                .token(generateToken)
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(15))
+                .user(user)
+                .build();
+        tokenRepository.save(token);
+        return generateToken;
     }
 
 
