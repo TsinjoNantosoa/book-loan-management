@@ -15,18 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.net.http.HttpHeaders;
 
 @Service
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private final jwtService jwtService;extactUsername
+    private final jwtService jwtService;
 
     private UserDetailsService userDetailsService;
-
-    public JwtFilter(jwtService jwtService) {
-        this.jwtService = jwtService;
-    }
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,

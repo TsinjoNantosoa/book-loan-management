@@ -44,20 +44,6 @@ public class User implements UserDetails, Principal {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
-    public User(Integer id, String firstname, String lastname, LocalDate dataOfBirth, String password, String email, boolean accountLocked, boolean enable, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<Role> roles) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.dataOfBirth = dataOfBirth;
-        this.password = password;
-        this.email = email;
-        this.accountLocked = accountLocked;
-        this.enable = enable;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-        this.roles = roles;
-    }
-
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
@@ -109,7 +95,7 @@ public class User implements UserDetails, Principal {
     public boolean isEnabled() {
         return enable;
     }
-    private String fullName(){
+    public String fullName(){
         return firstname + " " + lastname;
     }
 }

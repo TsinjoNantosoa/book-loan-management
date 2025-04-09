@@ -1,6 +1,7 @@
 package com.tsinjo.book_borrow.authentication;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
@@ -15,15 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
     private final AuthenticationService service;
 
-    public AuthenticationController(AuthenticationService service) {
-        this.service = service;
-    }
-
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<?> register(
             @RequestBody @Valid RegistrationRequest request
-    ) {
+    ) throws MessagingException {
         service.register(request);
         return ResponseEntity.accepted().build();
 

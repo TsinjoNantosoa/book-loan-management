@@ -14,10 +14,6 @@ public class JwtFilterImpl implements UserDetailsService {
 
    private final UserRepository repository;
 
-    public JwtFilterImpl(UserRepository repository) {
-        this.repository = repository;
-    }
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {

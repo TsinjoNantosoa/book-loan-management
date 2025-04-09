@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Activate Your Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        div {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #555555;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .greeting {
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .activation-code {
+            margin: 20px 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            background-color: #e9f7ef;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>Activate your account</h1>
+    <p class="greeting" th:text="Ḧello + ${username + ';'}"></p>
+    <p>Thank you very much for signing up! Please use the following activation code to activate your account:</p>
+    <div class="activation-code">
+        <span th:text="${activationCode}"></span>
+    </div>
+    <div>
+<!--        <a href="${confirmationUrl}" target="_blank">Activate your account</a>-->
+        <a th:href="${confirmationUrl}" target="_blank">Activate your account</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,13 +1,17 @@
 package com.tsinjo.book_borrow.authentication;
 
+import com.tsinjo.book_borrow.email.EmailService;
+import com.tsinjo.book_borrow.email.EmailTemplate;
 import com.tsinjo.book_borrow.role.RoleRepository;
 import com.tsinjo.book_borrow.user.Token;
 import com.tsinjo.book_borrow.user.TokenRepository;
 import com.tsinjo.book_borrow.user.User;
 import com.tsinjo.book_borrow.user.UserRepository;
+import jakarta.mail.MessagingException;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.cfg.defs.EmailDef;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
@@ -22,10 +26,13 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final EmailService emailService;
+    @Value("${application.mailing.frontend.activation-url}")
+    private String activationUrl;
+    private final RoleRepository roleRepository;
 
 
-    private RoleRepository roleRepository;
-    public void register(RegistrationRequest request) {
+    public void register(RegistrationRequest request) throws MessagingException {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalStateException("THe role user should initialized"));
         var user = User.builder()
@@ -43,9 +50,17 @@ public class AuthenticationService {
 
     }
 
-    private void sendValidationEmail(User user) {
+    private void sendValidationEmail(User user) throws MessagingException {
         var newToken =generateAndSaveActivationToken(user);
         //send the email
+        emailService.sendEmail(
+                user.getEmail(),
+                user.fullName(),
+                EmailTemplate.ACTIVATE_ACCOUNT,
+                activationUrl,
+                newToken,
+                "Activate your account"
+        );
     }
 
     private String generateAndSaveActivationToken(User user) {
@@ -64,7 +79,7 @@ public class AuthenticationService {
 
 
     private String generateAndSaveActivationCode(int length) {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String characters = "0123456789";
         SecureRandom secureRandom = new SecureRandom();
         StringBuilder activationCode = new StringBuilder();
         for (int i = 0; i < length; i++) {
