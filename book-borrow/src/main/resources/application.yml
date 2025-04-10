@@ -1,14 +1,29 @@
+#spring:
+#  profiles:
+#    active: dev
+#
+#  servlet:
+#    multipart:
+#      max-file-size: 50MB
+#
+#server:
+#  servlet:
+#    context-path: /api/v1/
+#
+#springdoc:
+#  default-produces-media-type: application/json
+
 spring:
   profiles:
-    active: dev
+    active: dev  # Active le profil de développement, change la configuration en fonction de ce profil
 
   servlet:
     multipart:
-      max-file-size: 50MB
+      max-file-size: 50MB  # Limite de taille pour les fichiers uploadés
 
 server:
   servlet:
-    context-path: /api/v1/
+    context-path: /api/v1/  # Préfixe commun pour toutes les routes de l'application
 
 springdoc:
-  default-produces-media-type: application/json
+  default-produces-media-type: application/json  # Définit le type de média par défaut pour la documentation Swagger

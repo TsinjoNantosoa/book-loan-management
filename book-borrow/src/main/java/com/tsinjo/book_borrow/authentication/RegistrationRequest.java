@@ -27,18 +27,17 @@ public class RegistrationRequest {
     @NotBlank(message = "the email is not blank")
     private String email;
 
+    @Size(min = 8, message = "the password should compose at least 8 characters.")
+    @NotEmpty(message = "password is mandatory")
+    @NotBlank(message = "the password is not blank")
+    private String password;
+
     public RegistrationRequest(String firstname, String lastname, String email, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
     }
-
-    @Size(min = 8, message = "the password should compose at least 8 characters.")
-    @NotEmpty(message = "password is mandatory")
-    @NotBlank(message = "the password is not blank")
-    private String password;
-
 
     public String getPassword() {
         return password;

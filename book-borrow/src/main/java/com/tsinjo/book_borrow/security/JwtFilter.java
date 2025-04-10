@@ -19,7 +19,7 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private final jwtService jwtService;
+    private final JwtService jwtService;
 
     private UserDetailsService userDetailsService;
 
@@ -36,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        if (authHeader == null || authHeader.startsWith("Bearer")) {
+        if (authHeader != null || authHeader.startsWith("Bearer")) {
             filterChain.doFilter(request, response);
             return;
         }

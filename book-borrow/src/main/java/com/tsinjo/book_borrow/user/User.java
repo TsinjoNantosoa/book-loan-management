@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "app_user") // ✅ Changement ici pour éviter l'erreur SQL
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
 
@@ -34,8 +34,10 @@ public class User implements UserDetails, Principal {
     private String firstname;
     private String lastname;
     private LocalDate dataOfBirth;
+
     @Column(unique = true)
     private String email;
+
     private String password;
     private boolean accountLocked;
     private boolean enable;
@@ -51,7 +53,6 @@ public class User implements UserDetails, Principal {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-
     @Override
     public String getName() {
         return email;
@@ -62,8 +63,7 @@ public class User implements UserDetails, Principal {
         return this.roles
                 .stream()
                 .map(r -> new SimpleGrantedAuthority(r.getName()))
-                .collect(Collectors.toList())
-                ;
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -95,7 +95,8 @@ public class User implements UserDetails, Principal {
     public boolean isEnabled() {
         return enable;
     }
-    public String fullName(){
+
+    public String fullName() {
         return firstname + " " + lastname;
     }
 }
