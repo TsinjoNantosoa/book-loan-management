@@ -81,8 +81,14 @@ spring:
 application:
   security:
     jwt:
-      secret-key: 3I9c-Un"#HIi+mL  # Clé secrète pour signer les JWT (vérifiez qu'elle est sécurisée)
+      secret-key: //jOUAXkClvCrd4iFrqA4Noi/8wOTpLXTuPdoow0Fngr253NM2V51DiI0c2Afns7KUCtLqbuPCSFJGuOk0tPKw==   # Clé secrète pour signer les JWT (vérifiez qu'elle est sécurisée)
       expiration: 8640000  # Temps d'expiration du token JWT en millisecondes
   mailing:
     frontend:
       activation-url: http://localhost:4200/activate-account  # URL pour activer le compte sur le frontend
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    # Optionnel: Pour voir aussi le mapping des requêtes
+    # org.springframework.web: DEBUG

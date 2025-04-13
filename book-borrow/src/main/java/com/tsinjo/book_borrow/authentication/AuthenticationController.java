@@ -32,11 +32,20 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
+//    @GetMapping("/activate-account")
+//    public void confirmAccount(
+//            @RequestParam("token") String token
+//    ) throws MessagingException {
+//        service.activateAccount(token);
+//    }
+
     @GetMapping("/activate-account")
-    public void confirmAccount(
+    public ResponseEntity<String> confirmAccount(
             @RequestParam("token") String token
     ) throws MessagingException {
         service.activateAccount(token);
+        return ResponseEntity.ok("Compte activé avec succès !");
     }
+
 
 }

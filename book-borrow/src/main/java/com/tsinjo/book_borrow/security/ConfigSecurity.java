@@ -1,6 +1,7 @@
 package com.tsinjo.book_borrow.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher; // Import si nécessaire
 
 @Configuration
 @EnableWebSecurity
@@ -20,26 +22,28 @@ public class ConfigSecurity {
     private final JwtFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(
-                                        "/api/v1/auth/**",
-                                        "/v2/api-docs",
-                                        "/v3/api-docs",
-                                        "/v3/api-docs/**",
-                                        "/swagger-resources",
-                                        "swagger-resources/**",
-                                        "/configuration/ui/**",
-                                        "/configuration/security",
-                                        "/swagger-ui/**",
-                                        "/webjars/**",
-                                        "/swagger-ui.html"
+                                        // Chemins SANS le context-path /api/v1
+                                        AntPathRequestMatcher.antMatcher("/auth/**"), // Plus explicite
+                                        // Ou simplement "/auth/**"
+                                        AntPathRequestMatcher.antMatcher("/v2/api-docs"),
+                                        AntPathRequestMatcher.antMatcher("/v3/api-docs"),
+                                        AntPathRequestMatcher.antMatcher("/v3/api-docs/**"),
+                                        AntPathRequestMatcher.antMatcher("/swagger-resources"),
+                                        AntPathRequestMatcher.antMatcher("/swagger-resources/**"),
+                                        AntPathRequestMatcher.antMatcher("/configuration/ui"), // Pas besoin de /** ici en général
+                                        AntPathRequestMatcher.antMatcher("/configuration/security"),
+                                        AntPathRequestMatcher.antMatcher("/swagger-ui/**"),
+                                        AntPathRequestMatcher.antMatcher("/webjars/**"),
+                                        AntPathRequestMatcher.antMatcher("/swagger-ui.html")
                                 ).permitAll()
-                                .anyRequest()
-                                .authenticated()
+                                .anyRequest().authenticated() // Toutes les autres requêtes nécessitent une authentification
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -47,5 +51,3 @@ public class ConfigSecurity {
         return http.build();
     }
 }
-
-//"/api/v1/auth/register"
