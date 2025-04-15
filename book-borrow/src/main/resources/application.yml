@@ -1,18 +1,3 @@
-#spring:
-#  profiles:
-#    active: dev
-#
-#  servlet:
-#    multipart:
-#      max-file-size: 50MB
-#
-#server:
-#  servlet:
-#    context-path: /api/v1/
-#
-#springdoc:
-#  default-produces-media-type: application/json
-
 spring:
   profiles:
     active: dev  # Active le profil de développement, change la configuration en fonction de ce profil
