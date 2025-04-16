@@ -1,5 +1,7 @@
 package com.tsinjo.book_borrow.book;
 
+import com.tsinjo.book_borrow.history.BookTransactionHistory;
+
 public class BookMapper {
     public Book tobook(BookRequest request) {
         return Book.builder()
@@ -24,6 +26,19 @@ public class BookMapper {
                 .shareable(book.isShareable())
                 .owner(book.getOwner())
 //                .cover(book.)
+
+                .build();
+    }
+
+    public Object toBorrowedBookResponse(BookTransactionHistory history) {
+        return  BorrowedBookResponse.builder()
+                .id(history.getBook().getId())
+                .title(history.getBook().getTitle())
+                .authorName(history.getBook().getAuthorName())
+                .isbn(history.getBook().getIsbn())
+                .rate(history.getBook().getRate())
+                .returned(history.isReturned())
+                .returnApproved(history.isReturnedApproved())
 
                 .build();
     }
