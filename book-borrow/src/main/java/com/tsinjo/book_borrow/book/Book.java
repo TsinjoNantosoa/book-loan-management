@@ -28,6 +28,9 @@ public class Book extends BasedEntity {
     private String authorName;
     private String isbn;
     private String synopsis;
+    private String bookCover;
+    private boolean archived;
+    private boolean shareable;
 
 
     @ManyToOne
@@ -97,7 +100,7 @@ public class Book extends BasedEntity {
         this.shareable = shareable;
     }
 
-    public User getOwner() {
+    public String getOwner() {
         return owner;
     }
 
@@ -121,7 +124,18 @@ public class Book extends BasedEntity {
         this.histories = histories;
     }
 
-    private String bookCover;
-    private boolean archived;
-    private boolean shareable;
+    @Transient
+    double getRate(){
+        if (feedbacks == null || feedbacks.isEmpty()) {
+            return  0.0;
+        }
+        var rate = this.feedbacks.stream()
+                .mapToDouble(Feedback::getNote)
+                .average()
+                .orElse(0.0);
+        double roundedRate = Math.round(rate * 10.0 / 10.0);
+        return roundedRate;
+    }
+
+
 }
