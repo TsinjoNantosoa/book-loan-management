@@ -87,6 +87,10 @@ application:
     frontend:
       activation-url: http://localhost:4200/activate-account  # URL pour activer le compte sur le frontend
 
+  file:
+    upload:
+      photos-output-path: ./uploads
+
 logging:
   level:
     org.springframework.security: DEBUG

@@ -1,5 +1,6 @@
 package com.tsinjo.book_borrow.book;
 
+import com.tsinjo.book_borrow.file.FileUtils;
 import com.tsinjo.book_borrow.history.BookTransactionHistory;
 
 public class BookMapper {
@@ -25,8 +26,7 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
                 .owner(book.getOwner())
-//                .cover(book.)
-
+                .cover(FileUtils.readFileFromLocation(book, book.getBookCover()))
                 .build();
     }
 
