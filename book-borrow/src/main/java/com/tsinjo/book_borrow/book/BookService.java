@@ -6,26 +6,27 @@ import com.tsinjo.book_borrow.history.BookTransactionHistory;
 import com.tsinjo.book_borrow.history.BookTransactionHistoryRepository;
 import com.tsinjo.book_borrow.user.User;
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+//import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Objects;
-
 import static com.tsinjo.book_borrow.book.BookSpecification.withOwnerId;
 
-public class BooService {
+@Service
+public class BookService {
     private  final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookTransactionHistoryRepository bookTransactionHistoryRepository;
     private BookTransactionHistoryRepository transactionHistoryRepository;
     private final FileStorageService fileStorageService;
 
-    public BooService(BookRepository bookRepository, BookMapper bookMapper, BookTransactionHistoryRepository bookTransactionHistoryRepository, FileStorageService fileStorageService) {
+    public BookService(BookRepository bookRepository, BookMapper bookMapper, BookTransactionHistoryRepository bookTransactionHistoryRepository, FileStorageService fileStorageService) {
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
         this.bookTransactionHistoryRepository = bookTransactionHistoryRepository;
@@ -77,7 +78,7 @@ public class BooService {
         User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("created date").descending());
         Page<BookTransactionHistory> allBorrowedBooks = bookTransactionHistoryRepository.findAllBorrowedBooks(pageable, user.getId());
-        List<BorrowedBookResponse> bookResponse = allBorrowedBooks.stream()
+        List<BorrowedBookResponse> bookResponse = (List<BorrowedBookResponse>) allBorrowedBooks.stream()
                 .map((java.util.function.Function<? super BookTransactionHistory, ? extends BorrowedBookResponse>) bookMapper::toBorrowedBookResponse)
                 .toList();
 
@@ -98,7 +99,7 @@ public class BooService {
         User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("created date").descending());
         Page<BookTransactionHistory> allBorrowedBooks = bookTransactionHistoryRepository.findAllReturnedBooks(pageable, user.getId());
-        List<BorrowedBookResponse> bookResponse = allBorrowedBooks.stream()
+        List<BorrowedBookResponse> bookResponse = (List<BorrowedBookResponse>) allBorrowedBooks.stream()
                 .map((java.util.function.Function<? super BookTransactionHistory, ? extends BorrowedBookResponse>) bookMapper::toBorrowedBookResponse)
                 .toList();
 

@@ -2,7 +2,9 @@ package com.tsinjo.book_borrow.book;
 
 import com.tsinjo.book_borrow.file.FileUtils;
 import com.tsinjo.book_borrow.history.BookTransactionHistory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BookMapper {
     public Book tobook(BookRequest request) {
         return Book.builder()
@@ -25,12 +27,12 @@ public class BookMapper {
                 .rate(book.getRate())
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
-                .owner(book.getOwner())
+                .owner(book.getOwner().getName())
                 .cover(FileUtils.readFileFromLocation(book, book.getBookCover()))
                 .build();
     }
 
-    public Object toBorrowedBookResponse(BookTransactionHistory history) {
+    public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory history) {
         return  BorrowedBookResponse.builder()
                 .id(history.getBook().getId())
                 .title(history.getBook().getTitle())

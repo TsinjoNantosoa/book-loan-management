@@ -7,11 +7,13 @@ import com.tsinjo.book_borrow.exception.OperationNotPermittedException;
 import com.tsinjo.book_borrow.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+//import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication; // ✅ Correct
+
 
 import java.util.List;
 import java.util.Objects;

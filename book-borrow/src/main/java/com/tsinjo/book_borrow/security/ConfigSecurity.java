@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher; // Import si nécessaire
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -22,28 +22,30 @@ public class ConfigSecurity {
     private final JwtFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    private static final AntPathRequestMatcher[] WHITE_LIST_URL = {
+            new AntPathRequestMatcher("/auth/**"),
+            new AntPathRequestMatcher("/v2/api-docs"),
+            new AntPathRequestMatcher("/v3/api-docs"),
+            new AntPathRequestMatcher("/v3/api-docs/**"),
+            new AntPathRequestMatcher("/swagger-resources"),
+            new AntPathRequestMatcher("/swagger-resources/**"),
+            new AntPathRequestMatcher("/configuration/ui"),
+            new AntPathRequestMatcher("/configuration/security"),
+            new AntPathRequestMatcher("/swagger-ui/**"),
+            new AntPathRequestMatcher("/webjars/**"),
+            new AntPathRequestMatcher("/swagger-ui.html")
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(
-                                        // Chemins SANS le context-path /api/v1
-                                        AntPathRequestMatcher.antMatcher("/auth/**"), // Plus explicite
-                                        // Ou simplement "/auth/**"
-                                        AntPathRequestMatcher.antMatcher("/v2/api-docs"),
-                                        AntPathRequestMatcher.antMatcher("/v3/api-docs"),
-                                        AntPathRequestMatcher.antMatcher("/v3/api-docs/**"),
-                                        AntPathRequestMatcher.antMatcher("/swagger-resources"),
-                                        AntPathRequestMatcher.antMatcher("/swagger-resources/**"),
-                                        AntPathRequestMatcher.antMatcher("/configuration/ui"), // Pas besoin de /** ici en général
-                                        AntPathRequestMatcher.antMatcher("/configuration/security"),
-                                        AntPathRequestMatcher.antMatcher("/swagger-ui/**"),
-                                        AntPathRequestMatcher.antMatcher("/webjars/**"),
-                                        AntPathRequestMatcher.antMatcher("/swagger-ui.html")
-                                ).permitAll()
-                                .anyRequest().authenticated() // Toutes les autres requêtes nécessitent une authentification
+                        req.requestMatchers(WHITE_LIST_URL)
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
