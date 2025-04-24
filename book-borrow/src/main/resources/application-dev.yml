@@ -42,6 +42,8 @@
 #    frontend:
 #      activation-url: http://localhost:4200/activate-account
 #
+server:
+  port: 8088
 
 spring:
   datasource:  # Configuration de la source de données (PostgreSQL)
