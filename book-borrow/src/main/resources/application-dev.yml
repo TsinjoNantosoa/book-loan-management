@@ -1,0 +1,100 @@
+#spring:
+#  datasource:  # Configuration de la source de données (PostgreSQL)
+#    url: jdbc:postgresql://localhost:5432/bookdb  # URL JDBC pour accéder à la base PostgreSQL
+#    username: tsinjo  # Nom d'utilisateur pour la base de données
+#    password: nantosoa  # Mot de passe pour la base de données
+#    driver-class-name: org.postgresql.Driver  # Driver JDBC de PostgreSQL
+#
+#  jpa:  # Configuration de JPA (Java Persistence API)
+#    hibernate:
+#      ddl-auto: update  # Mise à jour automatique du schéma de la base (utilisé en dev)
+#    show-sql: false  # Ne pas afficher les requêtes SQL dans la console
+#    properties:
+#      hibernate:
+#        format_sql: true  # Formatage lisible des requêtes SQL dans les logs
+#    database: postgresql  # Type de base utilisée
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect  # Dialecte Hibernate pour PostgreSQL
+#
+#  mail:  # Configuration du service mail (utilisé ici avec MailDev)
+#    host: localhost  # Adresse de l'hôte SMTP (MailDev fonctionne sur localhost)
+#    port: 1025  # Port SMTP utilisé par MailDev
+#    username: tsinjo  # Pas de nom d'utilisateur requis pour MailDev
+#    password: nantosoa  # Pas de mot de passe requis pour MailDev
+#    properties:
+#      mail:
+#        smtp:
+#          trust: "*"
+#          auth: true  # Pas d'authentification SMTP nécessaire
+#          starttls:
+#            enable: true
+#          connectiontimeout: 5000
+#          timeout: 3000
+#          writetimeout: 5000
+#    default-encoding: UTF-8  # Encodage par défaut des emails
+#    test-connection: false  # Pas de test de connexion au démarrage
+#    # Configuration pour envoyer les mails en développement avec MailDev (port 1025 SMTP, interface Web sur http://localhost:1080)
+#application:
+#  security:
+#    jwt:
+#      secret-key: 3I9c-Un"#HIi+mL
+#      expiration: 8640000
+#  mailing:
+#    frontend:
+#      activation-url: http://localhost:4200/activate-account
+#
+server:
+  port: 8088
+
+spring:
+  datasource:  # Configuration de la source de données (PostgreSQL)
+    url: jdbc:postgresql://localhost:5432/bookdb  # URL JDBC pour accéder à la base PostgreSQL
+    username: tsinjo  # Nom d'utilisateur pour la base de données
+    password: nantosoa  # Mot de passe pour la base de données
+    driver-class-name: org.postgresql.Driver  # Driver JDBC de PostgreSQL
+
+  jpa:  # Configuration de JPA (Java Persistence API)
+    hibernate:
+      ddl-auto: update  # Mise à jour automatique du schéma de la base (utilisé en dev)
+    show-sql: false  # Ne pas afficher les requêtes SQL dans la console
+    properties:
+      hibernate:
+        format_sql: true  # Formatage lisible des requêtes SQL dans les logs
+    database: postgresql  # Type de base utilisée
+    database-platform: org.hibernate.dialect.PostgreSQLDialect  # Dialecte Hibernate pour PostgreSQL
+
+  mail:  # Configuration du service mail (utilisé ici avec MailDev)
+    host: localhost  # Adresse de l'hôte SMTP (MailDev fonctionne sur localhost)
+    port: 1025  # Port SMTP utilisé par MailDev
+    username: tsinjo  # Pas de nom d'utilisateur requis pour MailDev
+    password: nantosoa  # Pas de mot de passe requis pour MailDev
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+          auth: true  # Pas d'authentification SMTP nécessaire
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+    default-encoding: UTF-8  # Encodage par défaut des emails
+    test-connection: false  # Pas de test de connexion au démarrage
+
+application:
+  security:
+    jwt:
+      secret-key: //jOUAXkClvCrd4iFrqA4Noi/8wOTpLXTuPdoow0Fngr253NM2V51DiI0c2Afns7KUCtLqbuPCSFJGuOk0tPKw==   # Clé secrète pour signer les JWT (vérifiez qu'elle est sécurisée)
+      expiration: 8640000  # Temps d'expiration du token JWT en millisecondes
+  mailing:
+    frontend:
+      activation-url: http://localhost:4200/activate-account  # URL pour activer le compte sur le frontend
+
+  file:
+    upload:
+      photos-output-path: ./uploads
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    # Optionnel: Pour voir aussi le mapping des requêtes
+    # org.springframework.web: DEBUG

@@ -1,0 +1,38 @@
+services:
+  # PostgreSQL est installé localement sur le système
+  # Utilisez: sudo systemctl start postgresql
+  # postgres:
+  #   container_name: postgrs-sql-bsn
+  #   image: postgres
+  #   environment:
+  #     POSTGRES_USER: tsinjo
+  #     POSTGRES_PASSWORD: nantosoa
+  #     PGDATA: /var/lib/postgresql/data
+  #     POSTGRES_DB: bookDb
+  #   volumes:
+  #     - postgres:/data/postgres
+  #   ports:
+  #     - 5432:5432
+  #   networks:
+  #     - spring-demo
+  #   restart: unless-stopped
+  
+  mail-dev:
+    container_name: mail-dev-bsn
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+networks:
+  spring-demo:
+    driver: bridge
+
+# Volume non nécessaire car PostgreSQL est installé localement
+# volumes:
+#   postgres:
+#     driver: local
+
+
+
+
