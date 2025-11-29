@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/dashboard">📚 Book Borrow</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" routerLink="/books">Tous les livres</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/my-books">Mes livres</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/add-book">Ajouter un livre</a></li>
+      </ul>
+      <button class="btn btn-outline-light" (click)="logout()">Déconnexion</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <h2 class="mb-4">📚 Tous les livres disponibles</h2>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!loading && books.length === 0" class="text-center py-5">
+    <p class="text-muted">Aucun livre disponible</p>
+  </div>
+
+  <div class="row" *ngIf="!loading && books.length > 0">
+    <div class="col-md-3 mb-4" *ngFor="let book of books">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <p class="card-text text-muted">{{ book.authorName }}</p>
+          <p class="small text-muted">ISBN: {{ book.isbn }}</p>
+          <span class="badge" [class.bg-success]="book.shareable" [class.bg-secondary]="!book.shareable">
+            {{ book.shareable ? 'Partageable' : 'Non partageable' }}
+          </span>
+        </div>
+        <div class="card-footer bg-white">
+          <button class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/books', book.id]">Détails</button>
+          <button *ngIf="book.shareable" class="btn btn-sm btn-primary" (click)="borrowBook(book.id)">Emprunter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav *ngIf="totalPages > 1" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 0">
+        <button class="page-link" (click)="previousPage()">Précédent</button>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">Page {{ currentPage + 1 }} / {{ totalPages }}</span>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+        <button class="page-link" (click)="nextPage()">Suivant</button>
+      </li>
+    </ul>
+  </nav>
+</div>

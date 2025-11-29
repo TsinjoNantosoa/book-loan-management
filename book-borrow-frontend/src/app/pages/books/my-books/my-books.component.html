@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/dashboard">📚 Book Borrow</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/books">Tous les livres</a></li>
+        <li class="nav-item"><a class="nav-link active" routerLink="/my-books">Mes livres</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/add-book">Ajouter un livre</a></li>
+      </ul>
+      <button class="btn btn-outline-light" (click)="logout()">Déconnexion</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>📚 Mes livres</h2>
+    <button class="btn btn-success" routerLink="/add-book">+ Ajouter un livre</button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!loading && books.length === 0" class="text-center py-5">
+    <p class="text-muted">Vous n'avez pas encore ajouté de livres</p>
+    <button class="btn btn-primary" routerLink="/add-book">Ajouter mon premier livre</button>
+  </div>
+
+  <div class="row" *ngIf="!loading && books.length > 0">
+    <div class="col-md-4 mb-4" *ngFor="let book of books">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <p class="card-text text-muted">{{ book.authorName }}</p>
+          <p class="small text-muted">ISBN: {{ book.isbn }}</p>
+          <div class="mb-2">
+            <span class="badge me-1" [class.bg-success]="book.shareable" [class.bg-secondary]="!book.shareable">
+              {{ book.shareable ? 'Partageable' : 'Non partageable' }}
+            </span>
+            <span class="badge" [class.bg-warning]="book.archived" [class.bg-info]="!book.archived">
+              {{ book.archived ? 'Archivé' : 'Actif' }}
+            </span>
+          </div>
+        </div>
+        <div class="card-footer bg-white">
+          <div class="btn-group w-100 mb-2">
+            <button class="btn btn-sm btn-outline-primary" (click)="toggleShareable(book)">
+              {{ book.shareable ? '🔒 Rendre privé' : '🌐 Rendre public' }}
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" (click)="toggleArchived(book)">
+              {{ book.archived ? '📂 Désarchiver' : '📥 Archiver' }}
+            </button>
+          </div>
+          <label class="btn btn-sm btn-outline-success w-100">
+            📷 Changer couverture
+            <input type="file" accept="image/*" style="display: none;" (change)="uploadCover(book.id, $event)">
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

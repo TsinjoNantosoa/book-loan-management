@@ -1,0 +1,235 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">📚 Book Borrow</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/books">Tous les livres</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/my-books">Mes livres</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/add-book">Ajouter un livre</a>
+        </li>
+      </ul>
+      <button class="btn btn-outline-light" (click)="logout()">
+        Déconnexion
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container-fluid py-4">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!loading">
+    <!-- Welcome Message -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <h2 class="mb-3">Bienvenue sur votre Dashboard 👋</h2>
+        <p class="text-muted">Gérez vos livres et vos emprunts en toute simplicité</p>
+      </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+      <div class="col-md-4 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="bg-primary bg-opacity-10 rounded-3 p-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-book text-primary" viewBox="0 0 16 16">
+                    <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="text-muted mb-1">Total des livres</h6>
+                <h3 class="mb-0">{{ totalBooks }}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="bg-success bg-opacity-10 rounded-3 p-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-collection text-success" viewBox="0 0 16 16">
+                    <path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6v7zm1.5.5A.5.5 0 0 1 1 13V6a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-13z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="text-muted mb-1">Mes livres</h6>
+                <h3 class="mb-0">{{ myBooksCount }}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="bg-warning bg-opacity-10 rounded-3 p-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-check text-warning" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="text-muted mb-1">Livres empruntés</h6>
+                <h3 class="mb-0">{{ borrowedBooksCount }}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two Columns Layout -->
+    <div class="row">
+      <!-- Recent Books -->
+      <div class="col-lg-8 mb-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white border-0 py-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">📚 Livres disponibles</h5>
+              <a routerLink="/books" class="btn btn-sm btn-outline-primary">Voir tout</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div *ngIf="recentBooks.length === 0" class="text-center py-5 text-muted">
+              <p>Aucun livre disponible pour le moment</p>
+              <a routerLink="/add-book" class="btn btn-primary">Ajouter un livre</a>
+            </div>
+            
+            <div class="row" *ngIf="recentBooks.length > 0">
+              <div class="col-md-6 mb-3" *ngFor="let book of recentBooks">
+                <div class="card h-100 border">
+                  <div class="card-body">
+                    <h6 class="card-title">{{ book.title }}</h6>
+                    <p class="card-text text-muted small mb-2">
+                      <strong>Auteur:</strong> {{ book.authorName }}
+                    </p>
+                    <p class="card-text text-muted small mb-2">
+                      <strong>ISBN:</strong> {{ book.isbn }}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="badge" [class.bg-success]="book.shareable" [class.bg-secondary]="!book.shareable">
+                        {{ book.shareable ? 'Partageable' : 'Non partageable' }}
+                      </span>
+                      <div>
+                        <button 
+                          class="btn btn-sm btn-outline-primary me-1" 
+                          [routerLink]="['/books', book.id]">
+                          Détails
+                        </button>
+                        <button 
+                          *ngIf="book.shareable && !book.archived"
+                          class="btn btn-sm btn-primary" 
+                          (click)="borrowBook(book.id)">
+                          Emprunter
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Borrowed Books -->
+      <div class="col-lg-4 mb-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0">📖 Mes emprunts</h5>
+          </div>
+          <div class="card-body">
+            <div *ngIf="myBorrowedBooks.length === 0" class="text-center py-4 text-muted">
+              <p class="small">Aucun livre emprunté</p>
+            </div>
+            
+            <div class="list-group list-group-flush" *ngIf="myBorrowedBooks.length > 0">
+              <div class="list-group-item px-0" *ngFor="let book of myBorrowedBooks">
+                <div class="d-flex w-100 justify-content-between align-items-start mb-2">
+                  <h6 class="mb-1">{{ book.title }}</h6>
+                </div>
+                <p class="mb-1 text-muted small">{{ book.authorName }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="badge" 
+                    [class.bg-warning]="!book.returned"
+                    [class.bg-info]="book.returned && !book.returnApproved"
+                    [class.bg-success]="book.returnApproved">
+                    {{ book.returnApproved ? 'Retourné' : (book.returned ? 'En attente' : 'Emprunté') }}
+                  </span>
+                  <button 
+                    *ngIf="!book.returned"
+                    class="btn btn-sm btn-outline-secondary" 
+                    (click)="returnBook(book.id)">
+                    Retourner
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card border-0 shadow-sm mt-3">
+          <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0">⚡ Actions rapides</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <a routerLink="/add-book" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                Ajouter un livre
+              </a>
+              <a routerLink="/my-books" class="btn btn-outline-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-collection me-2" viewBox="0 0 16 16">
+                  <path d="M2.5 3.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm2-2a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6v7zm1.5.5A.5.5 0 0 1 1 13V6a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-13z"/>
+                </svg>
+                Gérer mes livres
+              </a>
+              <a routerLink="/books" class="btn btn-outline-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+                Parcourir les livres
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

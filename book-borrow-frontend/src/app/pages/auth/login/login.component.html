@@ -1,0 +1,70 @@
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <!-- Left side - Image/Branding -->
+    <div class="col-md-6 d-none d-md-flex bg-primary align-items-center justify-content-center text-white">
+      <div class="text-center">
+        <h1 class="display-3 mb-4">📚 Book Borrow</h1>
+        <p class="lead">Partagez vos livres avec la communauté</p>
+      </div>
+    </div>
+
+    <!-- Right side - Login Form -->
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+      <div class="w-75" style="max-width: 400px;">
+        <h2 class="mb-4">Connexion</h2>
+        
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              id="email" 
+              formControlName="email"
+              placeholder="votre@email.com"
+              [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <div class="invalid-feedback" *ngIf="loginForm.get('email')?.errors?.['required']">
+              L'email est requis
+            </div>
+            <div class="invalid-feedback" *ngIf="loginForm.get('email')?.errors?.['email']">
+              Email invalide
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input 
+              type="password" 
+              class="form-control" 
+              id="password" 
+              formControlName="password"
+              placeholder="••••••••"
+              [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <div class="invalid-feedback" *ngIf="loginForm.get('password')?.errors?.['required']">
+              Le mot de passe est requis
+            </div>
+            <div class="invalid-feedback" *ngIf="loginForm.get('password')?.errors?.['minlength']">
+              Le mot de passe doit contenir au moins 6 caractères
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn btn-primary w-100 mb-3"
+            [disabled]="loginForm.invalid || loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            {{ loading ? 'Connexion...' : 'Se connecter' }}
+          </button>
+        </form>
+
+        <div class="text-center mt-3">
+          <p>Pas encore de compte ? <a routerLink="/register" class="text-decoration-none">S'inscrire</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

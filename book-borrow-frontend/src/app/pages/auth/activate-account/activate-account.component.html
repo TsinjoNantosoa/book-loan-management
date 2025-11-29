@@ -1,0 +1,42 @@
+<div class="container-fluid vh-100">
+  <div class="row h-100 align-items-center justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <h2>🔐 Activation du compte</h2>
+            <p class="text-muted">Entrez le code reçu par email</p>
+          </div>
+          
+          <div *ngIf="successMessage" class="alert alert-success" role="alert">
+            {{ successMessage }}
+          </div>
+          
+          <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            {{ errorMessage }}
+          </div>
+
+          <form [formGroup]="activateForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="token" class="form-label">Code d'activation (6 chiffres)</label>
+              <input type="text" class="form-control form-control-lg text-center" id="token" 
+                formControlName="token" placeholder="000000" maxlength="6"
+                [class.is-invalid]="activateForm.get('token')?.invalid && activateForm.get('token')?.touched">
+              <div class="invalid-feedback">Code à 6 chiffres requis</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 btn-lg mb-3" 
+              [disabled]="activateForm.invalid || loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ loading ? 'Activation...' : 'Activer mon compte' }}
+            </button>
+          </form>
+
+          <div class="text-center">
+            <a routerLink="/login" class="text-decoration-none">Retour à la connexion</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

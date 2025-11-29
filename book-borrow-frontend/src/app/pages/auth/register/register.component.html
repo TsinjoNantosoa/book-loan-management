@@ -1,0 +1,64 @@
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <div class="col-md-6 d-none d-md-flex bg-success align-items-center justify-content-center text-white">
+      <div class="text-center">
+        <h1 class="display-3 mb-4">📚 Rejoignez-nous!</h1>
+        <p class="lead">Créez un compte et commencez à partager vos livres</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+      <div class="w-75" style="max-width: 500px;">
+        <h2 class="mb-4">Inscription</h2>
+        
+        <div *ngIf="successMessage" class="alert alert-success" role="alert">
+          {{ successMessage }}
+        </div>
+        
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstname" class="form-label">Prénom</label>
+              <input type="text" class="form-control" id="firstname" formControlName="firstname"
+                [class.is-invalid]="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched">
+              <div class="invalid-feedback">Prénom requis (min 2 caractères)</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lastname" class="form-label">Nom</label>
+              <input type="text" class="form-control" id="lastname" formControlName="lastname"
+                [class.is-invalid]="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched">
+              <div class="invalid-feedback">Nom requis (min 2 caractères)</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" formControlName="email"
+              [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <div class="invalid-feedback">Email valide requis</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input type="password" class="form-control" id="password" formControlName="password"
+              [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            <div class="invalid-feedback">Mot de passe requis (min 8 caractères)</div>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100 mb-3" [disabled]="registerForm.invalid || loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            {{ loading ? 'Inscription...' : 'S\'inscrire' }}
+          </button>
+        </form>
+
+        <div class="text-center mt-3">
+          <p>Déjà un compte ? <a routerLink="/login" class="text-decoration-none">Se connecter</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

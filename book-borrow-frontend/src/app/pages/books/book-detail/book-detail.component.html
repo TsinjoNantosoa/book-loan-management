@@ -1,0 +1,87 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/dashboard">📚 Book Borrow</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/books">Tous les livres</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/my-books">Mes livres</a></li>
+      </ul>
+      <button class="btn btn-outline-light" (click)="logout()">Déconnexion</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <button class="btn btn-outline-primary mb-3" routerLink="/books">← Retour</button>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!loading && book" class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">{{ book.title }}</h2>
+          <p class="text-muted">Par {{ book.authorName }}</p>
+          <hr>
+          <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+          <p><strong>Propriétaire:</strong> {{ book.owner }}</p>
+          <p><strong>Synopsis:</strong> {{ book.synopsis || 'Aucun synopsis disponible' }}</p>
+          <div class="mt-3">
+            <span class="badge me-2" [class.bg-success]="book.shareable" [class.bg-secondary]="!book.shareable">
+              {{ book.shareable ? 'Partageable' : 'Non partageable' }}
+            </span>
+            <span class="badge bg-info">Note: {{ book.rate || 0 }}/5</span>
+          </div>
+          <button *ngIf="book.shareable" class="btn btn-primary mt-3" (click)="borrowBook()">
+            📖 Emprunter ce livre
+          </button>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-header">
+          <h5 class="mb-0">💬 Commentaires ({{ feedbacks.length }})</h5>
+        </div>
+        <div class="card-body">
+          <button class="btn btn-sm btn-success mb-3" (click)="showFeedbackForm = !showFeedbackForm">
+            {{ showFeedbackForm ? 'Annuler' : '+ Ajouter un commentaire' }}
+          </button>
+
+          <div *ngIf="showFeedbackForm" class="mb-4 p-3 border rounded">
+            <h6>Votre avis</h6>
+            <div class="mb-3">
+              <label class="form-label">Note</label>
+              <select class="form-select" [(ngModel)]="newFeedback.note">
+                <option [value]="1">1 - Très mauvais</option>
+                <option [value]="2">2 - Mauvais</option>
+                <option [value]="3">3 - Moyen</option>
+                <option [value]="4">4 - Bon</option>
+                <option [value]="5">5 - Excellent</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Commentaire</label>
+              <textarea class="form-control" rows="3" [(ngModel)]="newFeedback.comment"></textarea>
+            </div>
+            <button class="btn btn-primary" (click)="submitFeedback()">Publier</button>
+          </div>
+
+          <div *ngIf="feedbacks.length === 0 && !showFeedbackForm" class="text-muted">
+            Aucun commentaire pour le moment. Soyez le premier à donner votre avis!
+          </div>
+
+          <div *ngFor="let feedback of feedbacks" class="border-bottom pb-3 mb-3">
+            <div class="d-flex justify-content-between">
+              <strong>Note: {{ feedback.note }}/5 ⭐</strong>
+              <small class="text-muted">{{ feedback.createdDate | date }}</small>
+            </div>
+            <p class="mb-0 mt-2">{{ feedback.comment }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
